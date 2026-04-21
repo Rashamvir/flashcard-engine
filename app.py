@@ -17,13 +17,15 @@ from sm2 import update_sm2
 
 load_dotenv()
 
+basedir = os.path.abspath(os.path.dirname(__file__))
 BASE_DIR = Path(__file__).resolve().parent
-UPLOAD_DIR = BASE_DIR / "uploads"
+UPLOAD_FOLDER = os.path.join(basedir, "uploads")
+UPLOAD_DIR = Path(UPLOAD_FOLDER)
 UPLOAD_DIR.mkdir(exist_ok=True)
 
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{BASE_DIR / 'flashcards.db'}"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(basedir, "flashcards.db")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "flashcard-engine-dev-secret")
 app.config["MAX_CONTENT_LENGTH"] = 20 * 1024 * 1024
