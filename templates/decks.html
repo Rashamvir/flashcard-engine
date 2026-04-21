@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Flashcard Engine | Decks{% endblock %}
+
+{% block content %}
+{% if deck_stats %}
+    <section class="deck-grid">
+        {% for deck in deck_stats %}
+            <article class="card deck-card">
+                <h3>{{ deck.name }}</h3>
+                <p class="deck-meta">Created {{ deck.created_at.strftime("%b %d, %Y") }}</p>
+                <p class="deck-meta">{{ deck.total_cards }} cards</p>
+
+                <div class="mastery-row">
+                    <div style="display: flex; justify-content: space-between; gap: 16px; margin-bottom: 8px;">
+                        <span>Mastery</span>
+                        <strong>{{ deck.mastery_pct }}% mastered</strong>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" style="width: {{ deck.mastery_pct }}%;"></div>
+                    </div>
+                </div>
+
+                <div class="deck-actions">
+                    <a class="btn btn-primary" href="{{ url_for('practice', deck_id=deck.id) }}">Practice</a>
+                    <a class="btn btn-outline" href="{{ url_for('practice', deck_id=deck.id, mode='all') }}">Practice Again</a>
+                    <a class="btn btn-outline" href="{{ url_for('deck_cards', deck_id=deck.id) }}">View Cards</a>
+                    <form method="post" action="{{ url_for('delete_deck', deck_id=deck.id) }}" data-delete-form>
+                        <button class="btn btn-delete" type="submit">Delete</button>
+                    </form>
+                </div>
+            </article>
+        {% endfor %}
+    </section>
+{% else %}
+    <section class="card empty-state">
+        <h2>No decks yet. Upload a PDF to get started.</h2>
+        <a class="home-link" href="{{ url_for('index') }}">Back to Home</a>
+    </section>
+{% endif %}
+{% endblock %}

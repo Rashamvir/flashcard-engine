@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Flashcard Engine{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="page-shell">
+        <nav class="navbar">
+            <div class="container nav-inner">
+                <a class="brand" href="{{ url_for('index') }}">Flashcard Engine</a>
+                <div class="nav-links">
+                    <a class="nav-link {% if request.endpoint == 'index' %}active{% endif %}" href="{{ url_for('index') }}">Home</a>
+                    <a class="nav-link {% if request.endpoint in ['practice'] %}active{% endif %}" href="{{ url_for('practice') }}">Practice</a>
+                    <a class="nav-link {% if request.endpoint == 'decks' %}active{% endif %}" href="{{ url_for('decks') }}">Decks</a>
+                    <a class="nav-link {% if request.endpoint in ['progress', 'progress_data'] %}active{% endif %}" href="{{ url_for('progress') }}">Progress</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container flash-area">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash-message {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        <main class="main-content">
+            <div class="container">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="container">Built with Groq AI + SM-2 Spaced Repetition</div>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

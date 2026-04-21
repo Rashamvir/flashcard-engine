@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}Flashcard Engine | Practice{% endblock %}
+
+{% block content %}
+<section
+    class="practice-layout"
+    data-practice-app
+    data-initial-card='{{ initial_card|tojson }}'
+    data-total-cards="{{ practice_count }}"
+    data-deck-id="{{ selected_deck.id if selected_deck else '' }}"
+    data-practice-mode="{{ practice_mode if selected_deck else 'due' }}"
+>
+    {% if not selected_deck %}
+        <div class="card selector-card">
+            <h2>Choose a Deck to Practice</h2>
+            <p class="selector-copy">Pick a deck to start either a due review session or a full-deck practice run.</p>
+            <div class="form-grid" style="max-width: 420px; margin: 0 auto;">
+                <select class="select-input" data-deck-selector>
+                    <option value="">Select a deck</option>
+                    {% for deck in all_decks %}
+                        <option value="{{ deck.id }}">{{ deck.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    {% else %}
+        <div class="practice-header">
+            <div class="card">
+                <h2 style="margin-top: 0;">Practice: {{ selected_deck.name }}</h2>
+                <p class="practice-note">
+                    {% if practice_mode == "all" %}
+                        You are practicing every saved card in this deck, even if none are due today.
+                    {% else %}
+                        Review cards due today and keep your schedule moving without leaving the page.
+                    {% endif %}
+                </p>
+                <div class="button-row" style="margin-bottom: 14px;">
+                    <a class="btn {% if practice_mode == 'due' %}btn-primary{% else %}btn-outline{% endif %}" href="{{ url_for('practice', deck_id=selected_deck.id) }}">Due Today</a>
+                    <a class="btn {% if practice_mode == 'all' %}btn-primary{% else %}btn-outline{% endif %}" href="{{ url_for('practice', deck_id=selected_deck.id, mode='all') }}">Practice Again</a>
+                    <a class="btn btn-outline" href="{{ url_for('deck_cards', deck_id=selected_deck.id) }}">View Cards</a>
+                </div>
+                <p><strong><span data-reviewed-count>0</span> of <span data-total-count>{{ practice_count }}</span> cards reviewed</strong></p>
+                <div class="progress-track">
+                    <div class="progress-fill" data-progress-fill></div>
+                </div>
+            </div>
+        </div>
+
+        {% if practice_count == 0 %}
+            <div class="card completion-screen">
+                <h2>Session Complete</h2>
+                <p class="completion-copy">No cards are due right now, but your deck is still saved and ready whenever you want to revisit it.</p>
+                <div class="button-row" style="justify-content: center;">
+                    <a class="btn btn-primary" href="{{ url_for('practice', deck_id=selected_deck.id, mode='all') }}">Practice All Cards Again</a>
+                    <a class="btn btn-outline" href="{{ url_for('deck_cards', deck_id=selected_deck.id) }}">View Cards</a>
+                </div>
+            </div>
+        {% else %}
+            <section data-flashcard-section>
+                <div class="practice-card-shell">
+                    <div class="flashcard-scene" data-flashcard-scene>
+                        <div class="flashcard-inner">
+                            <div class="flashcard-face front">
+                                <div class="flashcard-question" data-question></div>
+                            </div>
+                            <div class="flashcard-face back">
+                                <div class="flashcard-answer" data-answer></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button-row" style="justify-content: center; margin-top: 24px;">
+                    <button class="btn btn-outline" type="button" data-flip-button>Flip Card</button>
+                </div>
+
+                <p class="practice-note" data-flip-prompt style="text-align: center;">Click the card or use the button to reveal the answer.</p>
+
+                <div class="rating-row hidden" data-rating-row style="margin-top: 20px;">
+                    <button class="btn btn-green" type="button" data-quality="5">Got it</button>
+                    <button class="btn btn-amber" type="button" data-quality="3">Almost</button>
+                    <button class="btn btn-red" type="button" data-quality="0">Missed</button>
+                </div>
+            </section>
+
+            <section class="card completion-screen hidden" data-completion-screen>
+                <h2>Session Complete</h2>
+                <p class="completion-copy">Nice work. You finished this run, and you can reopen the same set whenever you want.</p>
+                <div class="stats-inline">
+                    <span>Got it <strong data-stat-got-it>0</strong></span>
+                    <span>Almost <strong data-stat-almost>0</strong></span>
+                    <span>Missed <strong data-stat-missed>0</strong></span>
+                </div>
+                <div class="button-row" style="justify-content: center;">
+                    <a class="btn btn-primary" href="{{ url_for('practice', deck_id=selected_deck.id, mode='all') }}">Practice Again</a>
+                    <a class="btn btn-outline" href="{{ url_for('deck_cards', deck_id=selected_deck.id) }}">View Cards</a>
+                    <a class="btn btn-outline" href="{{ url_for('progress') }}">Go to Progress</a>
+                </div>
+            </section>
+        {% endif %}
+    {% endif %}
+</section>
+{% endblock %}

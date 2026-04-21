@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Flashcard Engine | Home{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-copy">
+        <h1>Turn Any PDF Into Smart Flashcards</h1>
+        <p>Upload a PDF and get AI-generated flashcards powered by spaced repetition.</p>
+    </div>
+
+    <div class="feature-grid">
+        <article class="card feature-card">
+            <h3>AI-Generated Cards</h3>
+            <p>Transform dense source material into clear questions and answers in minutes.</p>
+        </article>
+        <article class="card feature-card">
+            <h3>Spaced Repetition</h3>
+            <p>Review only what matters using SM-2 scheduling that adapts to your recall.</p>
+        </article>
+        <article class="card feature-card">
+            <h3>Track Mastery</h3>
+            <p>Follow growth across decks with due counts, mastery bands, and session history.</p>
+        </article>
+    </div>
+
+    <section class="card upload-panel">
+        <h2>Generate a New Deck</h2>
+        <form method="post" action="{{ url_for('upload') }}" enctype="multipart/form-data" class="form-grid" data-upload-form>
+            <div>
+                <label class="field-label" for="deck_name">Deck Name</label>
+                <input class="text-input" id="deck_name" name="deck_name" type="text" placeholder="e.g. Probability Basics" required>
+            </div>
+            <div>
+                <label class="field-label" for="pdf_file">PDF File</label>
+                <label class="file-upload-display" for="pdf_file" data-file-upload-display>
+                    <span data-file-upload-text>Choose a PDF file</span>
+                </label>
+                <input class="file-input-hidden" id="pdf_file" name="pdf_file" type="file" accept="application/pdf,.pdf" required>
+            </div>
+            <div class="button-row">
+                <button class="btn btn-primary" type="submit" data-upload-button>
+                    <span class="spinner" aria-hidden="true"></span>
+                    <span data-upload-label>Generate Flashcards</span>
+                </button>
+            </div>
+        </form>
+    </section>
+</section>
+{% endblock %}

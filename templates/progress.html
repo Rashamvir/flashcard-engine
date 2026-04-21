@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Flashcard Engine | Progress{% endblock %}
+
+{% block content %}
+<section class="progress-layout">
+    <div class="streak-banner">
+        <strong>Study streak: {{ streak }} days</strong>
+        <span>{{ "Keep going!" if streak > 1 else "Start your streak today!" if streak == 0 else "Keep going!" }}</span>
+    </div>
+
+    {% if deck_stats %}
+        {% for deck in deck_stats %}
+            <section style="margin-bottom: 24px;">
+                <h2>{{ deck.name }}</h2>
+                <div class="metrics-grid">
+                    <article class="metric-card total">
+                        <h3>Total Cards</h3>
+                        <div class="metric-number">{{ deck.total_cards }}</div>
+                    </article>
+                    <article class="metric-card mastered">
+                        <h3>Mastered</h3>
+                        <div class="metric-number">{{ deck.mastered }}</div>
+                    </article>
+                    <article class="metric-card shaky">
+                        <h3>Learning</h3>
+                        <div class="metric-number">{{ deck.learning }}</div>
+                    </article>
+                    <article class="metric-card due">
+                        <h3>Due Today</h3>
+                        <div class="metric-number">{{ deck.due_today }}</div>
+                    </article>
+                </div>
+            </section>
+        {% endfor %}
+
+        <section class="card chart-card">
+            <h2 style="margin-top: 0;">Mastery by Deck</h2>
+            <div style="height: 380px;">
+                <canvas id="progressChart"></canvas>
+            </div>
+        </section>
+    {% else %}
+        <section class="card empty-state">
+            <h2>No progress yet</h2>
+            <p>Upload a PDF to generate a deck and start tracking mastery over time.</p>
+            <a class="home-link" href="{{ url_for('index') }}">Go to Home</a>
+        </section>
+    {% endif %}
+</section>
+{% endblock %}

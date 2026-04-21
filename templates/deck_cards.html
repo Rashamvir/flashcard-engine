@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Flashcard Engine | {{ deck.name }} Cards{% endblock %}
+
+{% block content %}
+<section class="practice-layout">
+    <div class="card">
+        <h2 style="margin-top: 0;">{{ deck.name }} Cards</h2>
+        <p class="practice-note">These flashcards stay saved in your deck, so you can revisit the questions and answers anytime without uploading the PDF again.</p>
+        <div class="button-row">
+            <a class="btn btn-primary" href="{{ url_for('practice', deck_id=deck.id, mode='all') }}">Practice This Deck Again</a>
+            <a class="btn btn-outline" href="{{ url_for('practice', deck_id=deck.id) }}">Due Today</a>
+            <a class="btn btn-outline" href="{{ url_for('decks') }}">Back to Decks</a>
+        </div>
+    </div>
+
+    {% if cards %}
+        <section class="saved-cards-grid">
+            {% for card in cards %}
+                <article class="card saved-card">
+                    <span class="saved-card-label">Question</span>
+                    <h3>{{ card.question }}</h3>
+                    <span class="saved-card-label">Answer</span>
+                    <p>{{ card.answer }}</p>
+                </article>
+            {% endfor %}
+        </section>
+    {% else %}
+        <section class="card empty-state">
+            <h2>No saved cards found for this deck.</h2>
+            <a class="home-link" href="{{ url_for('decks') }}">Back to Decks</a>
+        </section>
+    {% endif %}
+</section>
+{% endblock %}
