@@ -10,7 +10,7 @@ from groq import Groq
 
 load_dotenv()
 
-MODEL_NAME = "llama3-8b-8192"
+MODEL_NAME = "llama-3.3-70b-versatile"
 CHUNK_SIZE = 1500
 MAX_TOTAL_CARDS = 12
 RETRY_PROMPT = (
