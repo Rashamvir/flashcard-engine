@@ -159,5 +159,4 @@ The Groq API key is stored as a server-side environment variable and never expos
 
 ## Author
 
-Rashamvir Kaur — Final Year CSE (Big Data Analytics), Chandigarh University  
-[LinkedIn](https://linkedin.com/in/rashamvirkaur) · [GitHub](https://github.com/rashamvirkaur)
+Rashamvir Kaur — B.E. CSE (Big Data Analytics), Chandigarh University
