@@ -10,8 +10,8 @@ from groq import Groq
 load_dotenv()
 
 MODEL_NAME = "llama-3.3-70b-versatile"
-CHUNK_SIZE = 3000
-MAX_TOTAL_CARDS = 24
+CHUNK_SIZE = 1500
+MAX_TOTAL_CARDS = 12
 RETRY_PROMPT = (
     "Return only valid JSON as an array of objects with question and answer keys. "
     "No markdown. No code fences. No explanation."
