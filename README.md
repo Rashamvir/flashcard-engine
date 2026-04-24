@@ -5,7 +5,7 @@ A web app that turns any PDF into AI-generated flashcards with spaced repetition
 
 ## Live Demo
 
-[https://flashcard-engine-9ty8.onrender.com](https://flashcard-engine-9ty8.onrender.com)
+[https://flashcard-engine-9ty8.onrender.com](https://flashcard-engine-6vv2.onrender.com/)
 
 > Note: Hosted on Render's free tier. If the app takes 30–50 seconds to load on first visit, please wait — it is waking up from sleep and will work normally after that.
 
